@@ -88,7 +88,7 @@ class Collapsible extends Component {
 
   _handleLayoutChange(event) {
     const contentHeight = event.nativeEvent.layout.height;
-    const height = this.props.collapsed ? this.props.collapsedHeight : contentHeight;
+    const height = this.props.useContentHeight ? contentHeight : (this.props.collapsed ? this.props.collapsedHeight : contentHeight);
     this.setState({
       height: new Animated.Value(height),
       contentHeight,
