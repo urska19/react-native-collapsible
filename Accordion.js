@@ -1,16 +1,17 @@
 import React, {
-  Component,
+  Component
 } from 'react';
 import PropTypes from 'prop-types';
 import {
   View,
   TouchableHighlight,
+  ViewPropTypes
 } from 'react-native';
 
 import Collapsible from './Collapsible';
 
 const COLLAPSIBLE_PROPS = Object.keys(Collapsible.propTypes);
-const VIEW_PROPS = Object.keys(View.propTypes);
+const VIEW_PROPS = Object.keys(ViewPropTypes);
 
 class Accordion extends Component {
   static propTypes = {
