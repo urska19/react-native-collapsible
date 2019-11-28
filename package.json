@@ -41,7 +41,7 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "prop-types": "^15.5.10"
+    "prop-types": "^15.6.2"
   },
   "peerDependencies": {
     "react": "*",
