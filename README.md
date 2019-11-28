@@ -1,11 +1,12 @@
 # react-native-collapsible
-*Animated collapsible component for React Native using the Animated API*
+
+_Animated collapsible component for React Native using the Animated API_
 
 Pure JavaScript, supports dynamic content heights and components that is aware of its `collapsed` state (good for toggling arrows etc).
 
 ## Installation
 
-```
+```bash
 npm install --save react-native-collapsible
 ```
 
@@ -13,60 +14,82 @@ npm install --save react-native-collapsible
 
 ```js
 import Collapsible from 'react-native-collapsible';
-<Collapsible collapsed={isCollapsed}>
-  <SomeCollapsedView />
-</Collapsible>
+
+() => (
+  <Collapsible collapsed={isCollapsed}>
+    <SomeCollapsedView />
+  </Collapsible>
+);
 ```
 
 ## Properties
 
-| Prop | Description | Default |
-|---|---|---|
-|**`align`**|Alignment of the content when transitioning, can be `top`, `center` or `bottom`|`top`|
-|**`collapsed`**|Whether to show the child components or not|`true`|
-|**`collapsedHeight`**|Which height should the component collapse to|`0`|
-|**`duration`**|Duration of transition in milliseconds|`300`|
-|**`easing`**|Function or function name from [`Easing`](https://github.com/facebook/react-native/blob/master/Libraries/Animated/src/Easing.js) (or [`tween-functions`](https://github.com/chenglou/tween-functions) if < RN 0.8). Collapsible will try to combine `Easing` functions for you if you name them like `tween-functions`. |`easeOutCubic`|
-|**`useContentHeight`**|Collapse to content height|`false`|
+| Prop                      | Description                                                                                                                                                                                                                                                                                                             | Default        |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| **`align`**               | Alignment of the content when transitioning, can be `top`, `center` or `bottom`                                                                                                                                                                                                                                         | `top`          |
+| **`collapsed`**           | Whether to show the child components or not                                                                                                                                                                                                                                                                             | `true`         |
+| **`collapsedHeight`**     | Which height should the component collapse to                                                                                                                                                                                                                                                                           | `0`            |
+| **`enablePointerEvents`** | Enable pointer events on collapsed view                                                                                                                                                                                                                                                                                 | `false`        |
+| **`duration`**            | Duration of transition in milliseconds                                                                                                                                                                                                                                                                                  | `300`          |
+| **`easing`**              | Function or function name from [`Easing`](https://github.com/facebook/react-native/blob/master/Libraries/Animated/src/Easing.js) (or [`tween-functions`](https://github.com/chenglou/tween-functions) if < RN 0.8). Collapsible will try to combine `Easing` functions for you if you name them like `tween-functions`. | `easeOutCubic` |
+| **`useContentHeight`**           | Collapse to content height                                                                                                                                                                                                                                                                             | `false`         |
+| **`style`**               | Optional styling for the container                                                                                                                                                                                                                                                                                      |                |
+| **`onAnimationEnd`**      | Callback when the toggle animation is done. Useful to avoid heavy layouting work during the animation                                                                                                                                                                                                                   | `() => {}`     |
+
 
 ## Accordion Usage
 
-This is a convenience component for a common use case, see demo below. 
+This is a convenience component for a common use case, see demo below.
 
 ```js
 import Accordion from 'react-native-collapsible/Accordion';
-<Accordion 
-  sections={['Section 1', 'Section 2', 'Section 3']}
-  renderHeader={this._renderHeader}
-  renderContent={this._renderContent}
-/>
+
+() => (
+  <Accordion
+    activeSections={[0]}
+    sections={['Section 1', 'Section 2', 'Section 3']}
+    renderSectionTitle={this._renderSectionTitle}
+    renderHeader={this._renderHeader}
+    renderContent={this._renderContent}
+    onChange={this._updateSections}
+  />
+);
 ```
 
 ## Properties
 
-| Prop | Description |
-|---|---|---|
-|**`sections`**|An array of sections passed to the render methods|
-|**`renderHeader(content, index, isActive)`**|A function that should return a renderable representing the header|
-|**`renderContent(content, index, isActive)`**|A function that should return a renderable representing the content|
-|**`onChange(index)`**|An optional function that is called when currently active section is changed, `index === false` when collapsed|
-|**`initiallyActiveSection`**|Set which index in the `sections` array is initially open. Defaults to none. |
-|**`activeSection`**|Control which index in the `sections` array is currently open. Defaults to none. If false, closes all sections.|
-|**`underlayColor`**|The color of the underlay that will show through when tapping on headers. Defaults to black. |
-|**`align`**|See `Collapsible`|
-|**`duration`**|See `Collapsible`|
-|**`easing`**|See `Collapsible`|
+| Prop                                                    | Description                                                                                                    |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| **`sections`**                                          | An array of sections passed to the render methods                                                              |
+| **`renderHeader(content, index, isActive, sections)`**  | A function that should return a renderable representing the header                                             |
+| **`renderContent(content, index, isActive, sections)`** | A function that should return a renderable representing the content                                            |
+| **`renderFooter(content, index, isActive, sections)`**  | A function that should return a renderable representing the footer                                             |
+| **`renderSectionTitle(content, index, isActive)`**      | A function that should return a renderable representing the title of the section outside the touchable element |
+| **`onChange(indexes)`**                                 | A function that is called when the currently active section(s) are updated.                                    |
+| **`activeSections`**                                    | Control which indices in the `sections` array are currently open. If empty, closes all sections.               |
+| **`underlayColor`**                                     | The color of the underlay that will show through when tapping on headers. Defaults to black.                   |
+| **`touchableComponent`**                                | The touchable component used in the Accordion. Defaults to `TouchableHighlight`                                |
+| **`touchableProps`**                                    | Properties for the `touchableComponent`                                                                        |
+| **`disabled`**                                          | Set whether the user can interact with the Accordion                                                           |
+| **`align`**                                             | See `Collapsible`                                                                                              |
+| **`duration`**                                          | See `Collapsible`                                                                                              |
+| **`easing`**                                            | See `Collapsible`                                                                                              |
+| **`onAnimationEnd(key, index)`**                        | See `Collapsible`.                                                                                             |
+| **`expandFromBottom`**                                  | Expand content from the bottom instead of the top                                                              |
+| **`expandMultiple`**                                    | Allow more than one section to be expanded. Defaults to false.                                                 |
+| **`sectionContainerStyle`**                             | Optional styling for the section container.                                                                    |
+| **`containerStyle`**                                    | Optional styling for the Accordion container.                                                                  |
 
 ## Demo
 
 ![demo](https://cloud.githubusercontent.com/assets/378279/8047315/0237ca2c-0e44-11e5-9a16-1da052406eb0.gif)
 
-## Example 
+## Example
 
-Check full example in the `Example` folder. 
+Check full example in the `Example` folder.
 
 ```js
-import React, { Component } from 'react-native';
+import React, { Component } from 'react';
 import Accordion from 'react-native-collapsible/Accordion';
 
 const SECTIONS = [
@@ -77,32 +100,51 @@ const SECTIONS = [
   {
     title: 'Second',
     content: 'Lorem ipsum...',
-  }
+  },
 ];
 
 class AccordionView extends Component {
-  _renderHeader(section) {
-    return (
-      <View style={styles.header}>
-        <Text style={styles.headerText}>{section.title}</Text>
-      </View>
-    );
-  }
+  state = {
+    activeSections: [],
+  };
 
-  _renderContent(section) {
+  _renderSectionTitle = section => {
     return (
       <View style={styles.content}>
         <Text>{section.content}</Text>
       </View>
     );
-  }
+  };
 
-  render {
+  _renderHeader = section => {
+    return (
+      <View style={styles.header}>
+        <Text style={styles.headerText}>{section.title}</Text>
+      </View>
+    );
+  };
+
+  _renderContent = section => {
+    return (
+      <View style={styles.content}>
+        <Text>{section.content}</Text>
+      </View>
+    );
+  };
+
+  _updateSections = activeSections => {
+    this.setState({ activeSections });
+  };
+
+  render() {
     return (
       <Accordion
         sections={SECTIONS}
+        activeSections={this.state.activeSections}
+        renderSectionTitle={this._renderSectionTitle}
         renderHeader={this._renderHeader}
         renderContent={this._renderContent}
+        onChange={this._updateSections}
       />
     );
   }
@@ -111,18 +153,18 @@ class AccordionView extends Component {
 
 ### Transition backgrounds
 
-If you combine with the [`react-native-animatable`](https://github.com/oblador/react-native-animatable) library you can easily transition the background color between the active and inactive state or add animations. 
+If you combine with the [`react-native-animatable`](https://github.com/oblador/react-native-animatable) library you can easily transition the background color between the active and inactive state or add animations.
 
 Lets augment the example above with:
+
 ```js
 import * as Animatable from 'react-native-animatable';
 
 (...)
 
-  _renderHeader(section, index, isActive) {
+  _renderHeader(section, index, isActive, sections) {
     return (
       <Animatable.View
-        style={styles.header}
         duration={300}
         transition="backgroundColor"
         style={{ backgroundColor: (isActive ? 'rgba(255,255,255,1)' : 'rgba(245,252,255,1)') }}>
@@ -131,10 +173,9 @@ import * as Animatable from 'react-native-animatable';
     );
   }
 
-  _renderContent(section, i, isActive) {
+  _renderContent(section, i, isActive, sections) {
     return (
       <Animatable.View
-        style={styles.content}
         duration={300}
         transition="backgroundColor"
         style={{ backgroundColor: (isActive ? 'rgba(255,255,255,1)' : 'rgba(245,252,255,1)') }}>
@@ -151,12 +192,41 @@ import * as Animatable from 'react-native-animatable';
 (...)
 ```
 
-To produce this (slowed down for visibility): 
+To produce this (slowed down for visibility):
 
 ![accordion-demo](https://cloud.githubusercontent.com/assets/378279/10767769/2ddfe234-7cb4-11e5-8ef1-c0f8c67ead58.gif)
 
+## Contributing
+
+Interested in contributing to this repo? Have a look at our [Contributing Guide](https://github.com/oblador/react-native-collapsible/blob/master/.github/CONTRIBUTING.MD)
+
+## Maintainers
+
+<table>
+  <tbody>
+    <tr>
+      <td align="center">
+        <a href="https://github.com/oblador">
+          <img width="150" height="150" src="https://github.com/oblador.png?v=3&s=150">
+          <br>
+          <strong>Joel Arvidsson</strong>
+        </a>
+        <br>
+        Author
+      </td>
+      <td align="center">
+        <a href="https://github.com/iRoachie">
+          <img width="150" height="150" src="https://github.com/iRoachie.png?v=3&s=150">
+          </br>
+          <strong>Kyle Roach</strong>
+        </a>
+        <br>
+        Maintainer
+      </td>
+    </tr>
+  <tbody>
+</table>
 
 ## License
 
-[MIT License](http://opensource.org/licenses/mit-license.html). © Joel Arvidsson 2015
-
+[MIT License](http://opensource.org/licenses/mit-license.html). © Joel Arvidsson 2015-2017
